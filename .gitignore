@@ -1,0 +1,7 @@
+# doxygen
+html/
+latex/
+# make
+*.dSYM/
+# DS_Store
+.DS_Store
