@@ -87,8 +87,8 @@ auto main(int argc, char *argv[]) -> int
     // >> .Exe/DailyMission/daily_mission '~/.Exe/DailyMission/list_daily_mission.csv'
     {
       std::string path_arg{argv[1]};
-      std::string symbol_home{"~"};
-      std::string path_home{std::getenv("HOME")};
+      std::string const symbol_home{"~"};
+      std::string const path_home{std::getenv("HOME")};
       Daily::Replace(path_arg, symbol_home, path_home);
       name_file = path_arg;
     }
