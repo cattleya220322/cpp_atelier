@@ -113,9 +113,9 @@ auto main(int argc, char *argv[]) -> int
   }
   // デイリーミッションリストの順番をシャッフル
   Daily::ShuffleList(list_daily);
-  std::cout << '\n';
+  // std::cout << '\n';
   // デイリーミッションを表示
   for (int i = 0; i < static_cast<int>(list_daily.size()); i++)
-    std::cout << i + 1 << ": " << list_daily[i] << '\n';
+    std::cout << i + 1 << ". " << list_daily[i] << '\n';
   std::cout << std::flush;
 }
