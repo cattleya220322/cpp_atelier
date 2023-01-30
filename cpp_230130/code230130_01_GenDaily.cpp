@@ -4,7 +4,8 @@
 #include <string>
 #include <vector>
 #include <random>
-#include <algorithm>
+#include <algorithm> // shuffle()
+#include <cstdlib>   // getenv()
 
 namespace Daily
 {
@@ -60,13 +61,45 @@ namespace Daily
     std::mt19937 engine(gen_seed());
     std::shuffle(list.begin(), list.end(), engine);
   }
+
+  /// @brief 文字列の部分置換（初めに見つかったモノのみ）
+  /// @param str_src 検索・置換対象の文字列
+  /// @param str_old 検索文字列
+  /// @param str_new 置換文字列
+  void Replace(std::string &str_src, std::string const &str_old, std::string const &str_new)
+  {
+    auto pos = str_src.find(str_old);
+    str_src.replace(pos, str_old.length(), str_new);
+  }
 }
 
 /// @brief csv ファイル中のリストからランダムなデイリーミッションを表示する
 /// @return 0: 正常終了
-auto main() -> int
+auto main(int argc, char *argv[]) -> int
 {
-  std::ifstream ifs("list_daily_mission.csv");
+  std::string name_file;
+  switch (argc)
+  {
+  case 1:
+    name_file = "list_daily_mission.csv";
+    break;
+  case 2:
+    // >> .Exe/DailyMission/daily_mission '~/.Exe/DailyMission/list_daily_mission.csv'
+    {
+      std::string path_arg{argv[1]};
+      std::string symbol_home{"~"};
+      std::string path_home{std::getenv("HOME")};
+      Daily::Replace(path_arg, symbol_home, path_home);
+      name_file = path_arg;
+    }
+    // >> ~/.Exe/DailyMission/daily_mission ~/.Exe/DailyMission/list_daily_mission.csv
+    // name_file = argv[1];
+    break;
+  default:
+    std::cout << "incorrect argument" << std::endl;
+    return 1;
+  }
+  std::ifstream ifs(name_file);
   // １行（１分野）
   std::string row_str;
   // デイリーミッションリスト
