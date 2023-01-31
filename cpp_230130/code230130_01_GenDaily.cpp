@@ -52,9 +52,9 @@ namespace Daily
   }
 
   /// @brief vector の要素順をシャッフル
-  /// @tparam T 要素の型
+  /// @tparam T 要素のデータ型
   /// @param list シャッフルする vector
-  template <typename T>
+  template <class T>
   void ShuffleList(std::vector<T> &list)
   {
     std::random_device gen_seed;
@@ -103,19 +103,25 @@ auto main(int argc, char *argv[]) -> int
   // １行（１分野）
   std::string row_str;
   // デイリーミッションリスト
-  std::vector<std::string> list_daily;
+  std::vector<std::vector<std::string>> list_daily;
   // 全行（全分野）に渡って
   while (std::getline(ifs, row_str))
   {
     std::vector<std::string> elems_str_in_row = Daily::Split(row_str, ',');
-    // １行（１分野）の中からランダムに１つ抽出する
-    list_daily.push_back(elems_str_in_row.at(Daily::GenRandom(elems_str_in_row.size())));
+    // 先頭位置にカテゴリを記入しているので、これをコピー・削除
+    std::string category_str = elems_str_in_row[0];
+    elems_str_in_row.erase(elems_str_in_row.begin());
+    // １行（１分野）の中からランダムにミッションを１つ抽出する
+    std::string elem_str = elems_str_in_row.at(Daily::GenRandom(elems_str_in_row.size()));
+    // カテゴリとミッションのセットを作る
+    std::vector<std::string> set_category_elem = {category_str, elem_str};
+    // カテゴリとミッションのセットのベクタ
+    list_daily.push_back(set_category_elem);
   }
   // デイリーミッションリストの順番をシャッフル
   Daily::ShuffleList(list_daily);
-  // std::cout << '\n';
   // デイリーミッションを表示
   for (int i = 0; i < static_cast<int>(list_daily.size()); i++)
-    std::cout << i + 1 << ". " << list_daily[i] << '\n';
+    std::cout << i + 1 << "." << '[' << list_daily[i][0] << ']' << list_daily[i][1] << '\n';
   std::cout << std::flush;
 }
