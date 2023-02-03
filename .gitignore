@@ -5,3 +5,5 @@ latex/
 *.dSYM/
 # DS_Store
 .DS_Store
+# cmake
+build/
