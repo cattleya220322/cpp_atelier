@@ -7,3 +7,5 @@ latex/
 .DS_Store
 # cmake
 build/
+# csv
+*.csv
